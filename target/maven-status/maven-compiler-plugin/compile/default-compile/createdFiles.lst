@@ -1,0 +1,7 @@
+com/n26/code/challenge/bean/Transaction.class
+com/n26/code/challenge/CodeChallengeApplication.class
+com/n26/code/challenge/service/StatisticsController.class
+com/n26/code/challenge/util/StatisticsUtil.class
+com/n26/code/challenge/dao/TransactionDAO.class
+com/n26/code/challenge/bean/Statistics.class
+com/n26/code/challenge/service/StatisticsHelper.class
