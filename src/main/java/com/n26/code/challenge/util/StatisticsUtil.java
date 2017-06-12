@@ -19,6 +19,7 @@ public class StatisticsUtil {
 		
 		if(unFilteredmap!=null && unFilteredmap.size() > 0){
 			
+			//filter the map which has transaction within 60 seconds
 			filteredTransMap = unFilteredmap.tailMap(getCurrentTimeLessThanMinute());
 		}
 		
@@ -32,7 +33,10 @@ public class StatisticsUtil {
 	 */
 	public static Date getCurrentTimeLessThanMinute(){
 		
+		//get the current time
 		Date now  = new Date();
+		
+		//minus 1 minute i.e 60 seconds
 		Date startTime = new Date(now.getTime() - (1 * 60 * 1000));
 		
 		return startTime;

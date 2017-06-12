@@ -3,7 +3,7 @@ package com.n26.code.challenge.bean;
 public class Transaction {
 
 	private Double amount = 0.0;
-	private Long timestamp = 0L;
+	private Long timestamp ;
 	
 	public Double getAmount() {
 		return amount;

@@ -42,7 +42,7 @@ public class TransactionDAO {
 			//Convert epoch timestamp to java date object
 			Date transDate = new Date(trans.getTimestamp());
 			
-			//get the currenttimw less than 60 seconds
+			//get the currenttime less than 60 seconds
 			Date startTime = StatisticsUtil.getCurrentTimeLessThanMinute();
 			
 			//check if the transaction date is within 60 seconds
