@@ -6,10 +6,8 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
-import java.util.TreeMap;
+import java.util.Stack;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -26,6 +24,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import com.n26.code.challenge.bean.Statistics;
 import com.n26.code.challenge.bean.Transaction;
+import com.n26.code.challenge.bean.TransactionVO;
 import com.n26.code.challenge.dao.TransactionDAO;
 
 @RunWith(SpringRunner.class)
@@ -106,17 +105,22 @@ public class StatisticsControllerTest {
 	@Test
 	public void testForTransactionStatisticsWithIn60Seconds() throws Exception{
 		
-		TreeMap<Date,List<Double>> unfilteredList = new TreeMap<>();
+		Stack<TransactionVO> unfilteredStack = new Stack<>();
 		
 		Date d1 = new Date();
-		List<Double> l1 = new ArrayList<>();
 		
-		l1.add(10.0);
-		l1.add(25.0);
+		TransactionVO transVO = new TransactionVO();
+		transVO.setAmount(10.0);
+		transVO.setTimestamp(d1);
 		
-		unfilteredList.put(d1, l1);
+		TransactionVO transVO1 = new TransactionVO();
+		transVO1.setAmount(25.0);
+		transVO1.setTimestamp(d1);
 		
-		when(transDAO.getAllTransaction()).thenReturn(unfilteredList);
+		unfilteredStack.push(transVO);
+		unfilteredStack.push(transVO1);
+		
+		when(transDAO.getAllTransactionData()).thenReturn(unfilteredStack);
 		
 		// execute
 		MvcResult result = mockMvc
@@ -129,7 +133,7 @@ public class StatisticsControllerTest {
 		assertEquals("Response Status", HttpStatus.OK.value(), status);
 	 
 		// verify that service method was called once
-		 verify(transDAO).getAllTransaction();
+		 verify(transDAO).getAllTransactionData();
 	 
 		 Statistics statsitics = TestUtils.jsonToObject(result.getResponse()
 												              .getContentAsString(), 
@@ -147,19 +151,18 @@ public class StatisticsControllerTest {
 	@Test
 	public void testForTransactionStatisticsLessThan60Seconds() throws Exception{
 		
-		TreeMap<Date,List<Double>> unfilteredList = new TreeMap<>();
+		Stack<TransactionVO> unfilteredStack = new Stack<>();
 		
 		Date d1 = new Date();
-		List<Double> l1 = new ArrayList<>();
-		
-		l1.add(10.0);
-		l1.add(25.0);
-		
 		Date d2 = new Date(d1.getTime() - 5 * 60 * 1000);
 		
-		unfilteredList.put(d2, l1);
+		TransactionVO transVO = new TransactionVO();
+		transVO.setAmount(20.0);
+		transVO.setTimestamp(d2);
 		
-		when(transDAO.getAllTransaction()).thenReturn(unfilteredList);
+		unfilteredStack.push(transVO);
+		
+		when(transDAO.getAllTransactionData()).thenReturn(unfilteredStack);
 		
 		// execute
 		MvcResult result = mockMvc
@@ -172,7 +175,7 @@ public class StatisticsControllerTest {
 		assertEquals("Response Status", HttpStatus.OK.value(), status);
 	 
 		// verify that service method was called once
-		 verify(transDAO).getAllTransaction();
+		 verify(transDAO).getAllTransactionData();
 	 
 		 Statistics statsitics = TestUtils.jsonToObject(result.getResponse()
 												              .getContentAsString(), 

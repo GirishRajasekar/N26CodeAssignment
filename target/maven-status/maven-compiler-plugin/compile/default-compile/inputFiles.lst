@@ -1,5 +1,6 @@
 /Users/Girish/Documents/workspace/N26CodeAssignment/src/main/java/com/n26/code/challenge/service/StatisticsController.java
 /Users/Girish/Documents/workspace/N26CodeAssignment/src/main/java/com/n26/code/challenge/dao/TransactionDAO.java
+/Users/Girish/Documents/workspace/N26CodeAssignment/src/main/java/com/n26/code/challenge/bean/TransactionVO.java
 /Users/Girish/Documents/workspace/N26CodeAssignment/src/main/java/com/n26/code/challenge/service/StatisticsHelper.java
 /Users/Girish/Documents/workspace/N26CodeAssignment/src/main/java/com/n26/code/challenge/bean/Statistics.java
 /Users/Girish/Documents/workspace/N26CodeAssignment/src/main/java/com/n26/code/challenge/bean/Transaction.java

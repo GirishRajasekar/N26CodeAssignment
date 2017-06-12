@@ -1,31 +1,27 @@
 package com.n26.code.challenge.service;
 
-import java.util.Date;
 import java.util.DoubleSummaryStatistics;
-import java.util.List;
-import java.util.SortedMap;
+import java.util.Stack;
 import java.util.stream.Collectors;
 
 import com.n26.code.challenge.bean.Statistics;
 
 public class StatisticsHelper {
 
+	
 	/**
 	 * Method will return the statistics for given transactions
 	 * 
 	 * @param statsMap
 	 * @return stats
 	 */
-	public static Statistics getTransactionStats(SortedMap<Date,List<Double>> statsMap){
+	public static Statistics getTransactionStats(Stack<Double> statsStack){
 		
 		Statistics stats = new Statistics();
 		
-		if(statsMap!=null && statsMap.size() > 0){
+		if(statsStack!=null && statsStack.size() > 0){
 			
-			//fetch the list of values from the map
-			List<Double> transAmtList = statsMap.values().stream().flatMap(List::stream).collect(Collectors.toList());
-			
-			DoubleSummaryStatistics summaryStatistics = transAmtList.stream().collect(Collectors.summarizingDouble(Double::doubleValue));
+			DoubleSummaryStatistics summaryStatistics = statsStack.stream().collect(Collectors.summarizingDouble(Double::doubleValue));
 			
 			//set maximum amount in the last 60 seconds transaction
 			stats.setMax(summaryStatistics.getMax());

@@ -1,8 +1,6 @@
 package com.n26.code.challenge.service;
 
-import java.util.Date;
-import java.util.List;
-import java.util.SortedMap;
+import java.util.Stack;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -73,10 +71,10 @@ public class StatisticsController {
 		logger.debug("In StatisticsController.getStatistics() Method -- Start");
 		
 		//Filter the map to get last 60 seconds transaction data
-		SortedMap<Date,List<Double>> transactionInTimeFrameMap = StatisticsUtil.getTimeBasedTransaction(statsDAO.getAllTransaction());
+		Stack<Double> transAmtInStack = StatisticsUtil.getTransactionWithInTimeFrame(statsDAO.getAllTransactionData());
 		
 		//Call the method to get the transaction statistics
-		Statistics transStatistics = StatisticsHelper.getTransactionStats(transactionInTimeFrameMap);
+		Statistics transStatistics = StatisticsHelper.getTransactionStats(transAmtInStack);
 		
 		logger.debug("In StatisticsController.getStatistics() Method -- End");
 		

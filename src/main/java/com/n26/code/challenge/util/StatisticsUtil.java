@@ -1,11 +1,12 @@
 package com.n26.code.challenge.util;
 
 import java.util.Date;
-import java.util.List;
-import java.util.SortedMap;
-import java.util.TreeMap;
+import java.util.Stack;
+
+import com.n26.code.challenge.bean.TransactionVO;
 
 public class StatisticsUtil {
+	
 	
 	/**
 	 * Method will return transaction within 60 seconds
@@ -13,17 +14,26 @@ public class StatisticsUtil {
 	 * @param unFilteredmap
 	 * @return filteredTransMap
 	 */
-	public static SortedMap<Date,List<Double>> getTimeBasedTransaction(TreeMap<Date,List<Double>> unFilteredmap){
+	public static Stack<Double> getTransactionWithInTimeFrame(Stack<TransactionVO> unFilteredStack){
 		
-		SortedMap<Date,List<Double>> filteredTransMap  = new TreeMap<>();
+		Stack<Double> filteredStack  = new Stack<>();
 		
-		if(unFilteredmap!=null && unFilteredmap.size() > 0){
+		if(unFilteredStack!=null && unFilteredStack.size() > 0){
 			
-			//filter the map which has transaction within 60 seconds
-			filteredTransMap = unFilteredmap.tailMap(getCurrentTimeLessThanMinute());
-		}
+			//filter the stack which has transaction within 60 seconds
+			for(TransactionVO transVO : unFilteredStack){
+				
+				if(transVO.getTimestamp().after(getCurrentTimeLessThanMinute())){
+					
+					filteredStack.push(transVO.getAmount());
+					
+				}else{
+					break;
+				}
+			}
+		 }
 		
-		return filteredTransMap;
+		return filteredStack;
 	}
 	
 	/**

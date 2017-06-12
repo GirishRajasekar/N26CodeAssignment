@@ -1,15 +1,14 @@
 package com.n26.code.challenge.dao;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
-import java.util.TreeMap;
+import java.util.Stack;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 import org.springframework.stereotype.Component;
 
 import com.n26.code.challenge.bean.Transaction;
+import com.n26.code.challenge.bean.TransactionVO;
 import com.n26.code.challenge.util.StatisticsUtil;
 
 
@@ -21,7 +20,8 @@ import com.n26.code.challenge.util.StatisticsUtil;
 @Component
 public class TransactionDAO {
 	
-	TreeMap<Date,List<Double>> transactionMap = new TreeMap<>();
+	
+	Stack<TransactionVO> transDetailsStack = new Stack<>();
 	
 	/**
 	 * Method to add the transaction to the map
@@ -48,26 +48,12 @@ public class TransactionDAO {
 			//check if the transaction date is within 60 seconds
 			if(transDate.after(startTime)){
 			
-				List<Double> transactionAmtList = null;
+				TransactionVO transactionVO = new TransactionVO();
 				
-				//check with the same transaction date if vlaue is present
-				if(transactionMap.get(transDate)!=null){
-					
-					//if its already there get the exisiting list
-					transactionAmtList = transactionMap.get(transDate);
-					
-				}else{
-					
-					//create a new list
-					transactionAmtList = new ArrayList<>();
-				}
+				transactionVO.setAmount(trans.getAmount());
+				transactionVO.setTimestamp(transDate);
 				
-				//add amount to list
-				transactionAmtList.add(trans.getAmount());
-				
-				//add to map
-				transactionMap.put(transDate, transactionAmtList);
-				
+				transDetailsStack.push(transactionVO);
 				
 				saved = true;
 			}
@@ -80,11 +66,13 @@ public class TransactionDAO {
 		return saved;
 	}
 	
+	
 	/**
 	 * Method will return the stored the transactions data
-	 * @return
+	 * 
+	 * @return transDetailsStack
 	 */
-	public TreeMap<Date,List<Double>> getAllTransaction(){
-		return transactionMap;
+	public Stack<TransactionVO> getAllTransactionData(){
+		return transDetailsStack;
 	}
 }
